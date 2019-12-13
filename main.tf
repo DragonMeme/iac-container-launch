@@ -19,7 +19,7 @@ resource "azurerm_container_registry" "test" {
   resource_group_name      = azurerm_resource_group.test.name
   location                 = var.region
   sku                      = "Basic"
-  admin_enabled            = false
+  admin_enabled            = true
 }
 
 # Create kubernetes cluster
