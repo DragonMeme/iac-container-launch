@@ -2,6 +2,8 @@ provider "azurerm" {
     version         = "~>1.30.0"
     subscription_id = var.subscription_id
     tenant_id       = var.tenant_id
+    client_id       = var.cID
+    client_secret   = var.sID
 }
 
 # Create resource group.
@@ -39,4 +41,14 @@ resource "azurerm_kubernetes_cluster" "test" {
     client_id     = var.cID
     client_secret = var.sID
   }
+}
+
+resource "azurerm_role_assignment" "acr_to_k8s" {
+  scope = "${var.subscription_id}/resourceGroups/${var.resourceName}"
+  role_definition_name = "ACRPull"
+  principal_id = data.azurerm_azuread_service_principal.sp.id
+}
+
+data "azurerm_azuread_service_principal" "sp" {
+  application_id  = var.cID
 }
